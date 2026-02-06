@@ -3,7 +3,7 @@
 Application web (SPA) construite avec **React + Vite** permettant d’explorer des films via l’API **TMDB**.
 
 > Mode “invité” : la Watchlist est sauvegardée en local (LocalStorage), sans compte utilisateur.
-
+>VITE_TMDB_TOKEN est requis pour accéder à l’API TMDB
 ---
 
 ## ✨ Fonctionnalités
@@ -38,3 +38,5 @@ Application web (SPA) construite avec **React + Vite** permettant d’explorer d
 1) Installer les dépendances :
 ```bash
 npm install
+
+
