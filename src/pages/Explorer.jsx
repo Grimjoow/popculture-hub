@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import MediaCard from '../components/MediaCard'
 import EmptyState from '../components/EmptyState'
-import { getTrendingMovies, searchMovies } from '../services/tmdbApi'
+import { getTrending, searchByType } from '../services/tmdbApi'
 import { debounce } from '../utils/debounce'
 
 function Explorer() {
@@ -15,6 +15,7 @@ function Explorer() {
   const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState('')
 
+  const [mediaType, setMediaType] = useState('movie') // "movie" | "tv"
   const [hasMore, setHasMore] = useState(true)
 
   const debouncedSetQuery = useMemo(
@@ -22,14 +23,18 @@ function Explorer() {
     []
   )
 
-  // Quand la query change, on reset la pagination
+  const trimmedQuery = query.trim()
+  const isSearching = Boolean(inputValue.trim())
+  const label = mediaType === 'tv' ? 'Séries' : 'Films'
+
+  // Reset pagination when query OR mediaType changes
   useEffect(() => {
     setPage(1)
     setItems([])
     setHasMore(true)
-  }, [query])
+  }, [trimmedQuery, mediaType])
 
-  // Charger la page 1 (après reset) ou recharger si besoin
+  // Load first page when query OR mediaType changes
   useEffect(() => {
     let cancelled = false
 
@@ -38,19 +43,18 @@ function Explorer() {
         setLoading(true)
         setError('')
 
-        const data = query.trim()
-          ? await searchMovies(query.trim(), 1)
-          : await getTrendingMovies('week', 1)
+        const data = isSearching
+          ? await searchByType(mediaType, trimmedQuery, 1)
+          : await getTrending(mediaType, 'week', 1)
 
         if (cancelled) return
 
         setItems(data.results || [])
-        // TMDB renvoie total_pages
         const totalPages = data.total_pages || 1
         setHasMore(1 < totalPages)
       } catch (err) {
         if (cancelled) return
-        setError(err.message || 'Erreur lors du chargement')
+        setError(err?.message || 'Erreur lors du chargement')
       } finally {
         if (cancelled) return
         setLoading(false)
@@ -62,7 +66,7 @@ function Explorer() {
     return () => {
       cancelled = true
     }
-  }, [query])
+  }, [isSearching, trimmedQuery, mediaType])
 
   async function handleLoadMore() {
     if (loadingMore || loading || !hasMore) return
@@ -72,9 +76,9 @@ function Explorer() {
     setError('')
 
     try {
-      const data = query.trim()
-        ? await searchMovies(query.trim(), nextPage)
-        : await getTrendingMovies('week', nextPage)
+      const data = isSearching
+        ? await searchByType(mediaType, trimmedQuery, nextPage)
+        : await getTrending(mediaType, 'week', nextPage)
 
       setItems((prev) => [...prev, ...(data.results || [])])
 
@@ -82,18 +86,25 @@ function Explorer() {
       setHasMore(nextPage < totalPages)
       setPage(nextPage)
     } catch (err) {
-      setError(err.message || 'Erreur lors du chargement')
+      setError(err?.message || 'Erreur lors du chargement')
     } finally {
       setLoadingMore(false)
     }
   }
 
-  const title = query.trim() ? 'Résultats de recherche' : 'Tendances de la semaine'
-
   return (
     <div style={{ padding: 12 }}>
+      {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12 }}>
-        <h2 style={{ marginTop: 0 }}>{title}</h2>
+        <div className="pageHeading">
+          <div className="pageHeadingTop">
+            <h2 className="pageTitle">{isSearching ? 'Résultats de recherche' : 'Tendances de la semaine'}</h2>
+            <span className={`pageBadge ${mediaType}`}>{label}</span>
+          </div>
+
+          <p className="pageSubtitle">Films & séries — tendances et watchlist.</p>
+          <div className="pageAccentBar"></div>
+        </div>
 
         {inputValue && (
           <button
@@ -111,13 +122,44 @@ function Explorer() {
         )}
       </div>
 
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: 10, marginTop: 10, marginBottom: 12 }}>
+        <button
+          type="button"
+          onClick={() => setMediaType('movie')}
+          style={{
+            borderColor: mediaType === 'movie' ? 'rgba(124, 92, 255, 0.55)' : undefined,
+            boxShadow: mediaType === 'movie' ? '0 0 0 3px rgba(124, 92, 255, 0.15)' : undefined,
+          }}
+        >
+          Films
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setMediaType('tv')}
+          style={{
+            borderColor: mediaType === 'tv' ? 'rgba(34, 197, 94, 0.55)' : undefined,
+            boxShadow: mediaType === 'tv' ? '0 0 0 3px rgba(34, 197, 94, 0.12)' : undefined,
+          }}
+        >
+          Séries
+        </button>
+      </div>
+
+      {/* Search */}
       <input
         type="search"
         value={inputValue}
-        placeholder="Rechercher un film…"
+        placeholder={mediaType === 'tv' ? 'Rechercher une série…' : 'Rechercher un film…'}
         onChange={(e) => {
           const v = e.target.value
           setInputValue(v)
+
+          if (!v.trim()) {
+            setQuery('')
+            return
+          }
           debouncedSetQuery(v)
         }}
         style={{ maxWidth: 520, marginTop: 10, marginBottom: 16 }}
@@ -154,7 +196,11 @@ function Explorer() {
             }}
           >
             {items.map((m) => (
-              <MediaCard key={`${m.id}-${m.release_date || ''}`} item={m} />
+              <MediaCard
+                key={`${m.id}-${m.release_date || m.first_air_date || ''}`}
+                item={m}
+                mediaType={mediaType}
+              />
             ))}
           </div>
 

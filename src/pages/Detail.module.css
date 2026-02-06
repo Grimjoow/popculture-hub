@@ -1,0 +1,50 @@
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.poster {
+  width: 100%;
+  border-radius: 14px;
+  display: block;
+}
+
+.content {
+  min-width: 0; /* important */
+}
+
+.title {
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.actions {
+  margin-top: 10px;
+}
+
+.synopsis {
+  margin-top: 16px;
+  line-height: 1.6;
+  max-width: 70ch;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .synopsis {
+    max-width: 100%;
+  }
+
+  .watchBtn {
+    width: 100%;
+  }
+}

@@ -94,3 +94,75 @@ select option {
   border-color: rgba(124, 92, 255, 0.55);
   box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.15);
 }
+.pageTitle {
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.pageBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+/* Film (violet) */
+.pageBadge.movie {
+  background: rgba(124, 92, 255, 0.18);
+  border-color: rgba(124, 92, 255, 0.45);
+  color: #cfc6ff;
+}
+
+/* Série (vert) */
+.pageBadge.tv {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(34, 197, 94, 0.45);
+  color: #9af0c2;
+}
+
+.pageTitle {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #c7c2ff 50%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pageHeading { margin-bottom: 10px; }
+
+.pageHeadingTop{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.pageTitle{
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.pageAccentBar{
+  height: 3px;
+  width: min(260px, 100%);
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(124,92,255,0.9),
+    rgba(34,197,94,0.75),
+    rgba(124,92,255,0.35)
+  );
+  opacity: 0.9;
+}
+.pageSubtitle {
+  margin: 6px 0 10px;
+  font-size: 14px;
+  color: var(--muted);
+}

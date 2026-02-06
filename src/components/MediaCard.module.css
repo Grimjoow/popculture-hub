@@ -73,3 +73,27 @@
   aspect-ratio: 2 / 3;
   background: rgba(255,255,255,0.04);
 }
+.typeBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid;
+  backdrop-filter: blur(6px);
+}
+
+/* Film = violet */
+.movie {
+  background: rgba(124, 92, 255, 0.18);
+  border-color: rgba(124, 92, 255, 0.45);
+  color: rgba(255,255,255,0.92);
+}
+
+/* Série = vert */
+.tv {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(34, 197, 94, 0.45);
+  color: rgba(255,255,255,0.92);
+}

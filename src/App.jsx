@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Explorer />} />
           <Route path="/watchlist" element={<Watchlist />} />
-          <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/detail/:mediaType/:id" element={<Detail />} />
         </Routes>
       </main>
       <ScrollToTopButton />

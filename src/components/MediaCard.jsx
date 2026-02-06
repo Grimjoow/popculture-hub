@@ -3,7 +3,8 @@ import styles from './MediaCard.module.css'
 
 const IMG_BASE = 'https://image.tmdb.org/t/p/w342'
 
-function MediaCard({ item }) {
+function MediaCard({ item, mediaType }) {
+  const type = item.media_type || mediaType || 'movie' // "movie" | "tv"
   const title = item.title || item.name || 'Titre inconnu'
   const posterPath = item.poster_path
   const rating = item.vote_average
@@ -11,9 +12,15 @@ function MediaCard({ item }) {
 
   return (
     <article className={styles.card}>
-      <Link to={`/detail/${item.id}`} className={styles.link}>
+      <Link to={`/detail/${type}/${item.id}`} className={styles.link}>
         <div className={styles.posterWrap}>
           {item.seen ? <div className={styles.badge}>Vu</div> : null}
+          {/* ✅ petit badge type */}
+          <div className={`${styles.typeBadge} ${type === 'tv' ? styles.tv : styles.movie}`}>
+  {type === 'tv' ? 'Série' : 'Film'}
+</div>
+
+
           {posterPath ? (
             <img
               src={`${IMG_BASE}${posterPath}`}
@@ -28,7 +35,10 @@ function MediaCard({ item }) {
           <div className={styles.title}>{title}</div>
           <div className={styles.meta}>
             <span>{year || '—'}</span>
-            <span>★ {rating ? rating.toFixed(1) : 'N/A'}</span>
+            <span>
+  ★ {typeof rating === 'number' ? rating.toFixed(1) : 'N/A'}
+</span>
+
           </div>
         </div>
       </Link>

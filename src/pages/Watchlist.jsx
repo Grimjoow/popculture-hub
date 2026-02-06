@@ -126,10 +126,11 @@ if (items.length === 0) {
       >
         {sortedItems.map((item) => (
           <div key={item.id}>
-            <MediaCard item={item} />
+            <MediaCard item={item} mediaType={item.media_type || 'movie'} />
+
 
             <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-              <button type="button" onClick={() => setItems(toggleSeen(item.id))}>
+              <button type="button" onClick={() => setItems(toggleSeen(item.id, item.mediaType))}>
                 {item.seen ? 'Marquer à voir' : 'Marquer vu'}
               </button>
 
