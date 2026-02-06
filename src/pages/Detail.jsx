@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getMovieCredits, getMovieDetails } from '../services/tmdbApi'
-import { isInWatchlist, toggleWatchlist } from '../store/watchliststore'
+import { isInWatchlist, toggleWatchlist } from '../store/watchlistStore'
 
 
 const IMG_BASE = 'https://image.tmdb.org/t/p/w500'
