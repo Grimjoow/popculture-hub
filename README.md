@@ -1,16 +1,40 @@
-# React + Vite
+# PopCulture Hub 🎬
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application web (SPA) construite avec **React + Vite** permettant d’explorer des films via l’API **TMDB**.
 
-Currently, two official plugins are available:
+> Mode “invité” : la Watchlist est sauvegardée en local (LocalStorage), sans compte utilisateur.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Fonctionnalités
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🔥 **Tendances de la semaine** (Trending)
+- 🔎 **Recherche** de films (avec debounce)
+- ➕ **Charger plus** (pagination progressive)
+- 🎞️ **Page détail** : infos + genres + synopsis + **casting**
+- ⭐ **Watchlist** persistée en local :
+  - ajouter / retirer depuis la page détail
+  - marquer comme **vu / à voir**
+  - supprimer
+  - **tri** (champ + asc/desc)
+- ⬆️ Bouton **retour en haut** pour améliorer l’UX sur les longues listes
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🧱 Stack & choix techniques
+
+- **React + Vite** : DX rapide, HMR
+- **React Router** : navigation SPA + routes dynamiques (`/detail/:id`)
+- **TMDB API** : données films + crédits
+- Architecture simple et lisible :
+  - `src/services/` : appels API (client + endpoints)
+  - `src/store/` : persistance Watchlist (LocalStorage)
+  - `src/components/` : UI réutilisable (cards, empty state, etc.)
+
+---
+
+## 🚀 Installation & lancement
+
+1) Installer les dépendances :
+```bash
+npm install
